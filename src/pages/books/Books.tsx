@@ -5,16 +5,12 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { useQuery } from '@tanstack/react-query'
-import { collectionGroup, type DocumentData, getDocs, type QuerySnapshot } from 'firebase/firestore'
 import React, { useContext, useState } from 'react'
 import UserContext from '../../context/UserContext'
 import { LargeTable, SmallTable } from '../../components'
-import { getAuthor, db } from '../../api'
-import { type Author, type AuthorRecord, type Book, type BookRecord } from '../../type'
-
-const getBooks = async (): Promise<QuerySnapshot<DocumentData>> => {
-  return await getDocs(collectionGroup(db, 'Book'))
-}
+import { getAuthor, getBooks } from '~/api'
+import { type Author, type AuthorRecord, type Book, type BookRecord } from '~/type'
+import BookReview from '~/pages/books/BookReview'
 
 type AuthorMap = Record<string, string>
 
@@ -60,7 +56,7 @@ const Books = (): JSX.Element => {
 
   return (
     <div>
-      <LargeTable component={Paper}>
+      <LargeTable>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -84,7 +80,9 @@ const Books = (): JSX.Element => {
                 <TableCell>{row.data().number}</TableCell>
                 <TableCell>{row.data().genre}</TableCell>
                 <TableCell>{row.data().bookType}</TableCell>
-                <TableCell>Show Review</TableCell>
+                <TableCell>
+                  <BookReview review={row.data().review} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -93,7 +91,7 @@ const Books = (): JSX.Element => {
       <SmallTable>
         <h2>Books</h2>
         {reviewList?.docs
-          .map((row): BookRecord => ({ id: row.id, book: row.data() }))
+          .map((row): BookRecord => ({ id: row.id, book: row.data() as Book }))
           .map((data) => (
             <div key={data.id}>
               <h3>{data.book.title}</h3>

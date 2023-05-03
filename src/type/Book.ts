@@ -4,9 +4,11 @@ export enum BookType {
   Paper,
 }
 
+export type Rating = -1 | 0 | 1 | 2 | 3 | 4 | 5
+
 export interface Book {
   title: string
-  rating: -1 | 0 | 1 | 2 | 3 | 4 | 5
+  rating: Rating
   genre?: string
   series?: string
   number?: number

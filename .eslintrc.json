@@ -7,6 +7,7 @@
         "plugin:react/recommended",
         "standard-with-typescript",
         "plugin:@typescript-eslint/recommended",
+        "react/jsx-runtime",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -21,6 +22,21 @@
         "react","@typescript-eslint","prettier"
     ],
     "rules": {
-        "prettier/prettier": ["error"]
+        "prettier/prettier": ["error"],
+        "import/order": [1, {
+            "pathGroups": [{
+                "pattern": "~/**",
+                "group": "external",
+                "position": "after"
+            }],
+            "groups": [
+                "external",
+                "builtin",
+                "internal",
+                "sibling",
+                "parent",
+                "index"
+            ]
+        }]
     }
 }

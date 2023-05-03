@@ -26,7 +26,7 @@ interface MenuData {
 const pages: MenuData[] = [
   { title: 'Authors', link: 'Authors' },
   { title: 'Books', link: 'Books' },
-  { title: 'Create Book', link: 'CreateBook' },
+  { title: 'Create Review', link: 'CreateBook' },
   { title: 'Create Author', link: 'CreateAuthor' },
 ]
 

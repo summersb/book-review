@@ -1,17 +1,18 @@
 import { Route, Routes } from 'react-router-dom'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import React, { useState } from 'react'
+import { type User } from 'firebase/auth'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { auth } from '~/api'
 import Home from './pages/home/Home'
 import Authors from './pages/authors/Authors'
 import Books from './pages/books/Books'
 import ResponsiveAppBar from './pages/nav/ResponsiveAppBar'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import React, { useState } from 'react'
 import UserContext from './context/UserContext'
-import { type User } from 'firebase/auth'
-import { auth } from './api/firebase'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import CreateBook from './pages/books/CreateBook'
 import CreateAuthor from './pages/authors/CreateAuthor'
+import BooksByAuthor from '~/pages/books/BooksByAuthor'
 
 const theme = createTheme({
   palette: {
@@ -48,6 +49,7 @@ const App = (): JSX.Element => {
                 <Route path="/" element={<Home />} />
                 <Route path="/Authors" element={<Authors />} />
                 <Route path="/Books" element={<Books />} />
+                <Route path="/BooksByAuthor/:id" element={<BooksByAuthor />} />
                 <Route path="/CreateBook" element={<CreateBook />} />
                 <Route path="/CreateAuthor" element={<CreateAuthor />} />
               </Routes>

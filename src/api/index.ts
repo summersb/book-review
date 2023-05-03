@@ -1,5 +1,5 @@
-import { saveBook } from './bookApi'
+import { getBooks, getBooksByAuthor, saveBook } from './bookApi'
 import { auth, db } from './firebase'
-import { getAuthor } from './authorApi'
+import { getAuthor, saveAuthor, getAuthorById } from './authorApi'
 
-export { getAuthor, saveBook, auth, db }
+export { getAuthor, saveAuthor, getAuthorById, getBooks, getBooksByAuthor, saveBook, auth, db }
