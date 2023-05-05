@@ -11,6 +11,7 @@ import { getAuthorById, getBooksByAuthor } from '~/api'
 import { type Author, type Book } from '~/type'
 import { useParams } from 'react-router-dom'
 import BookReview from '~/pages/books/BookReview'
+import NoUser from '../home/NoUser'
 
 type BooksByAuthorProps = {
   // authorId: string
@@ -21,6 +22,7 @@ const BooksByAuthor = (props: BooksByAuthorProps): JSX.Element => {
   const [author, setAuthor] = useState<Author | null>(null)
   const { id } = useParams()
 
+  console.log('hmmm')
   const { data: bookList, isSuccess: bookLoaded } = useQuery({
     queryKey: ['Book', id],
     queryFn: () => getBooksByAuthor(id as string),
@@ -45,7 +47,7 @@ const BooksByAuthor = (props: BooksByAuthorProps): JSX.Element => {
   })
 
   if (ctx?.user === undefined) {
-    return <>No User</>
+    return <NoUser />
   }
 
   if (!bookLoaded || !authorLoaded) {

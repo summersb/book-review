@@ -13,9 +13,9 @@ import MenuItem from '@mui/material/MenuItem'
 import PersonIcon from '@mui/icons-material/Person'
 import Avatar from '@mui/material/Avatar'
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary'
-import { NavLink } from 'react-router-dom'
-import { getRedirectResult, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
-import { auth } from '../../api'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { auth } from '~/api'
 import UserContext from '../../context/UserContext'
 
 interface MenuData {
@@ -36,20 +36,9 @@ function ResponsiveAppBar(): JSX.Element {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const ctx = useContext(UserContext)
+  const navigate = useNavigate()
 
   const user = ctx?.user
-
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result !== null) {
-          handleCloseUserMenu()
-        }
-      })
-      .catch((e: Error) => {
-        alert(e.message)
-      })
-  }, [])
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorElNav(event.currentTarget)
@@ -66,10 +55,10 @@ function ResponsiveAppBar(): JSX.Element {
     setAnchorElUser(null)
   }
 
-  const login = (e: MouseEvent): void => {
-    signInWithRedirect(auth, googleProvider).catch((error: Error) => {
-      alert(error.message)
-    })
+  const loginPopup = (): void => {
+    signInWithPopup(auth, googleProvider)
+      .catch(alert)
+      .finally(() => setAnchorElUser(null))
   }
 
   const logOut = (e: MouseEvent): void => {
@@ -131,10 +120,14 @@ function ResponsiveAppBar(): JSX.Element {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <NavLink to={page.link}>
-                    <Typography textAlign="center">{page.title}</Typography>
-                  </NavLink>
+                <MenuItem
+                  key={page.title}
+                  onClick={() => {
+                    handleCloseNavMenu()
+                    navigate(page.link)
+                  }}
+                >
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -193,16 +186,12 @@ function ResponsiveAppBar(): JSX.Element {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user === undefined && (
-                <MenuItem onClick={login}>
-                  <Typography textAlign="center">Login</Typography>
-                </MenuItem>
-              )}
-              {user !== undefined && (
-                <MenuItem onClick={logOut}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              )}
+              <MenuItem onClick={loginPopup} sx={{ display: user ? 'none' : 'block' }}>
+                <Typography textAlign="center">Login</Typography>
+              </MenuItem>
+              <MenuItem onClick={logOut} sx={{ display: user ? 'block' : 'none' }}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

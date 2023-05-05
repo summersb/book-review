@@ -17,6 +17,7 @@ import { getAuthor, saveBook } from '~/api'
 import { type Author, type AuthorRecord, type Book, type Rating as BookRating } from '~/type'
 import UserContext from '../../context/UserContext'
 import { WideTextField } from '~/components'
+import NoUser from '../home/NoUser'
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
   width: '100%',
@@ -45,7 +46,6 @@ const CreateBook = (): JSX.Element => {
   const {
     register,
     handleSubmit,
-    control,
     getValues,
     reset,
     setValue,
@@ -97,6 +97,10 @@ const CreateBook = (): JSX.Element => {
           setSaving(false)
         }, delay)
       })
+  }
+
+  if (ctx?.user === undefined) {
+    return <NoUser />
   }
 
   const labelIndex: number = hover !== -1 ? hover : getValues('rating') === undefined ? hover : getValues('rating')
@@ -195,7 +199,6 @@ const CreateBook = (): JSX.Element => {
                       setValue('rating', -1)
                     } else if (newValue > -1 && newValue < 6) {
                       const v = newValue as BookRating
-                      console.log('rating', v, newValue)
                       setValue('rating', v)
                     }
                   }}

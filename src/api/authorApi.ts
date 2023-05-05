@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   DocumentReference,
+  deleteDoc,
 } from 'firebase/firestore'
 import { auth, db } from './firebase'
 import { type Author, Book } from '../type'
@@ -37,4 +38,10 @@ const saveAuthor = async (author: Author): Promise<void> => {
   })
 }
 
-export { getAuthor, saveAuthor, getAuthorById }
+
+const deleteAuthor = async (book: DocumentReference<DocumentData>): Promise<any> => {
+  return await deleteDoc(book)
+}
+
+
+export { getAuthor, saveAuthor, getAuthorById, deleteAuthor }

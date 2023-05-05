@@ -2,16 +2,20 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import UserContext from '~/context/UserContext'
+import NoUser from '../home/NoUser'
 
 const style = {
   position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '100%',
+  top: '25%',
+  left: '25%',
+  transform: 'translate(-25%, -25%)',
+  width: '75%',
+  height: '75%',
   bgcolor: 'background.paper',
+  overflow: 'auto',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -25,6 +29,7 @@ type BookReviewProps = {
 const BookReview: React.FC<BookReviewProps> = (props: BookReviewProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
   const { id } = useParams()
+  const ctx = useContext(UserContext)
 
   const handleOpen = () => {
     setOpen(true)
@@ -33,6 +38,11 @@ const BookReview: React.FC<BookReviewProps> = (props: BookReviewProps): JSX.Elem
   const handleClose = () => {
     setOpen(false)
   }
+
+  if (ctx?.user === undefined) {
+    return <NoUser />
+  }
+
   return (
     <div>
       <Button onClick={handleOpen}>Show Review</Button>

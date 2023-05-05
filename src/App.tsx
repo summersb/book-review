@@ -48,10 +48,11 @@ const App = (): JSX.Element => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/Authors" element={<Authors />} />
+                <Route path="/Author/:id/Books" element={<BooksByAuthor />} />
                 <Route path="/Books" element={<Books />} />
-                <Route path="/BooksByAuthor/:id" element={<BooksByAuthor />} />
                 <Route path="/CreateBook" element={<CreateBook />} />
                 <Route path="/CreateAuthor" element={<CreateAuthor />} />
+                <Route path="*" element={<Home />} />
               </Routes>
             </main>
           </div>

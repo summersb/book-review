@@ -1,4 +1,14 @@
-import { collection, collectionGroup, doc, DocumentData, getDocs, QuerySnapshot, setDoc } from 'firebase/firestore'
+import {
+  collection,
+  collectionGroup,
+  deleteDoc,
+  doc,
+  DocumentData,
+  DocumentReference,
+  getDocs,
+  QuerySnapshot,
+  setDoc,
+} from 'firebase/firestore'
 import { type Book } from '~/type'
 import { db } from './firebase'
 
@@ -17,4 +27,8 @@ const getBooksByAuthor = async (authorId: string): Promise<QuerySnapshot<Documen
   return await getDocs(collection(db, `Author/${authorId}/Book`))
 }
 
-export { saveBook, getBooks, getBooksByAuthor }
+const deleteBook = async (book: DocumentReference<DocumentData>): Promise<any> => {
+  return await deleteDoc(book)
+}
+
+export { saveBook, getBooks, getBooksByAuthor, deleteBook }
