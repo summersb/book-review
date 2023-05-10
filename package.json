@@ -1,5 +1,5 @@
 {
-    "name": "mui-vite",
+    "name": "book-review-with-mui",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -18,6 +18,7 @@
         "@tanstack/react-query": "^4.29.5",
         "@tanstack/react-query-devtools": "^4.29.6",
         "firebase": "^9.21.0",
+        "firebaseui": "^6.0.2",
         "react": "^18.2.0",
         "react-device-detect": "^2.2.3",
         "react-dom": "^18.2.0",

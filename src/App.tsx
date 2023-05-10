@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { type User } from 'firebase/auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -13,6 +13,7 @@ import UserContext from './context/UserContext'
 import CreateBook from './pages/books/CreateBook'
 import CreateAuthor from './pages/authors/CreateAuthor'
 import BooksByAuthor from '~/pages/books/BooksByAuthor'
+import Login from '~/pages/home/Login'
 
 const theme = createTheme({
   palette: {
@@ -28,13 +29,15 @@ const client = new QueryClient()
 const App = (): JSX.Element => {
   const [user, setUser] = useState<User>()
 
-  auth.onAuthStateChanged((user) => {
-    if (user != null) {
-      setUser(user)
-    } else {
-      setUser(undefined)
-    }
-  })
+  useEffect(() => {
+    return auth.onAuthStateChanged((user) => {
+      if (user != null) {
+        setUser(user)
+      } else {
+        setUser(undefined)
+      }
+    })
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>
@@ -47,6 +50,7 @@ const App = (): JSX.Element => {
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/Authors" element={<Authors />} />
                 <Route path="/Author/:id/Books" element={<BooksByAuthor />} />
                 <Route path="/Books" element={<Books />} />

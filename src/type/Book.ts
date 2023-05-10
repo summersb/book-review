@@ -7,6 +7,7 @@ export enum BookType {
 export type Rating = -1 | 0 | 1 | 2 | 3 | 4 | 5
 
 export interface Book {
+  authorId: string
   title: string
   rating: Rating
   genre?: string
@@ -16,10 +17,4 @@ export interface Book {
   spoilerReview?: string
   dateRead?: string
   bookType?: BookType
-  authorId: string
-}
-
-export interface BookRecord {
-  id: string
-  book: Book
 }

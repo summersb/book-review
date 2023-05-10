@@ -22,5 +22,4 @@ const appCheck = initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 })
 
-export { auth, db }
-export default app
+export { auth, db, app }

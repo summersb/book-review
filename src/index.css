@@ -101,6 +101,10 @@ table th {
 }
 
 @media screen and (max-width: 600px) {
+  td.small {
+    display: none;
+  }
+
   table {
     border: 0;
   }

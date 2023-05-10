@@ -1,7 +1,8 @@
 import React from 'react'
+import Login from '~/pages/home/Login'
 
 const NoUser = () => {
-  return <div>No user, please login</div>
+  return <Login />
 }
 
 export default NoUser

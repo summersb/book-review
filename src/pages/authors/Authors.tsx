@@ -1,9 +1,4 @@
 import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
 import React, { useContext, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -70,6 +65,7 @@ const Authors = (): JSX.Element => {
   if (ctx?.user === undefined) {
     return <NoUser />
   }
+
   return (
     <div>
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={deleting}>
@@ -97,39 +93,39 @@ const Authors = (): JSX.Element => {
         </DialogActions>
       </Dialog>
       <Paper>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Books</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Books</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
             {reviewList?.docs.map((row) => (
-              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
+              <tr key={row.id}>
+                <td scope="row" data-label="First Name">
                   {row.data().firstName}
-                </TableCell>
-                <TableCell>{row.data().lastName}</TableCell>
-                <TableCell>
+                </td>
+                <td data-label="Last Name">{row.data().lastName}</td>
+                <td data-label="Books">
                   <Link component={RouterLink} to={`/Author/${row.id}/Books`}>
                     Show Books
                   </Link>
-                </TableCell>
-                <TableCell>
+                </td>
+                <td data-label="Delete">
                   <DeleteIcon
                     onClick={() => {
                       setAuthor(row)
                       setConfirmDelete(true)
                     }}
                   />
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </Paper>
     </div>
   )

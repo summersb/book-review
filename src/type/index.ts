@@ -1,2 +1,2 @@
-export type { Author, AuthorRecord } from './Author'
-export type { Book, BookRecord, BookType, Rating } from './Book'
+export type { Author, AuthorRecord, AuthorMap } from './Author'
+export type { Book, BookType, Rating } from './Book'
