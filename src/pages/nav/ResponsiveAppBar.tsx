@@ -1,4 +1,4 @@
-import React, { type MouseEvent, useContext, useEffect, useState } from 'react'
+import React, { type MouseEvent, useContext, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -61,7 +61,7 @@ function ResponsiveAppBar(): JSX.Element {
       .finally(() => setAnchorElUser(null))
   }
 
-  const logOut = (e: MouseEvent): void => {
+  const logOut = (): void => {
     auth.signOut().then(() => {
       setAnchorElUser(null)
     })

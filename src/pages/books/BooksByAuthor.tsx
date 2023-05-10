@@ -8,9 +8,7 @@ import { useParams } from 'react-router-dom'
 import NoUser from '../home/NoUser'
 import BookList, { BookListType } from '~/pages/books/BookList'
 
-type BooksByAuthorProps = {}
-
-const BooksByAuthor = (props: BooksByAuthorProps): JSX.Element => {
+const BooksByAuthor = (): JSX.Element => {
   const ctx = useContext(UserContext)
   const [author, setAuthor] = useState<Author | null>(null)
   const { id } = useParams()
@@ -22,6 +20,7 @@ const BooksByAuthor = (props: BooksByAuthorProps): JSX.Element => {
     onError: (err: Error) => {
       alert(err.message)
     },
+    staleTime: 100_000,
     retry: false,
   })
 
@@ -34,6 +33,7 @@ const BooksByAuthor = (props: BooksByAuthorProps): JSX.Element => {
     onError: (err: Error) => {
       alert(err.message)
     },
+    staleTime: 100_000,
     retry: false,
     enabled: ctx?.user !== undefined && id !== undefined,
   })

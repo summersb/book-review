@@ -2,6 +2,7 @@ import Paper from '@mui/material/Paper'
 import React, { useContext, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import UserContext from '~/context/UserContext'
 import { deleteBook, getAuthor } from '~/api'
 import Link from '@mui/material/Link'
@@ -32,6 +33,7 @@ const Authors = (): JSX.Element => {
       alert(err.message)
     },
     retry: false,
+    staleTime: 100_000,
     enabled: ctx?.user !== undefined,
   })
 
@@ -96,6 +98,7 @@ const Authors = (): JSX.Element => {
         <table>
           <thead>
             <tr>
+              <th scope="col">Edit</th>
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
               <th scope="col">Books</th>
@@ -105,6 +108,11 @@ const Authors = (): JSX.Element => {
           <tbody>
             {reviewList?.docs.map((row) => (
               <tr key={row.id}>
+                <td data-label="Edit">
+                  <Link component={RouterLink} to={`/Author/${row.id}`}>
+                    <EditIcon />
+                  </Link>
+                </td>
                 <td scope="row" data-label="First Name">
                   {row.data().firstName}
                 </td>

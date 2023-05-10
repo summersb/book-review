@@ -28,7 +28,6 @@ type BookReviewProps = {
 
 const BookReview: React.FC<BookReviewProps> = (props: BookReviewProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
-  const { id } = useParams()
   const ctx = useContext(UserContext)
 
   const handleOpen = () => {

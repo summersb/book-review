@@ -19,7 +19,7 @@ import UserContext from '../../context/UserContext'
 import { WideTextField } from '~/components'
 import NoUser from '../home/NoUser'
 
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
+const StyledFormControl = styled(FormControl)(() => ({
   width: '100%',
 }))
 

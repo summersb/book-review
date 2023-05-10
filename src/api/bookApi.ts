@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore'
 import { type Book } from '~/type'
 import { db } from './firebase'
+import { converter } from '~/api/converter'
 
 const saveBook = async (book: Book): Promise<void> => {
   const authorBookCollection = collection(db, `Author/${book.authorId}/Book`)
@@ -19,12 +20,12 @@ const saveBook = async (book: Book): Promise<void> => {
   })
 }
 
-const getBooks = async (): Promise<QuerySnapshot<DocumentData>> => {
-  return await getDocs(collectionGroup(db, 'Book'))
+const getBooks = async (): Promise<QuerySnapshot<Book>> => {
+  return await getDocs(collectionGroup(db, 'Book').withConverter(converter<Book>()))
 }
 
-const getBooksByAuthor = async (authorId: string): Promise<QuerySnapshot<DocumentData>> => {
-  return await getDocs(collection(db, `Author/${authorId}/Book`))
+const getBooksByAuthor = async (authorId: string): Promise<QuerySnapshot<Book>> => {
+  return await getDocs(collection(db, `Author/${authorId}/Book`).withConverter(converter<Book>()))
 }
 
 const deleteBook = async (book: DocumentReference<DocumentData>): Promise<any> => {

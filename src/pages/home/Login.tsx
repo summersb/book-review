@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import UserContext from '~/context/UserContext'
 
 const uiConfig = {
-  // Popup signin flow rather than redirect flow.
+  // Popup sign in flow rather than redirect flow.
   signInFlow: 'popup',
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
   signInSuccessUrl: '/Authors',

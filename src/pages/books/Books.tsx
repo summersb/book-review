@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import React, { useContext, useState } from 'react'
 import UserContext from '../../context/UserContext'
 import { getAuthor, getBooks } from '~/api'
@@ -15,6 +15,7 @@ const Books = (): JSX.Element => {
     onError: (err: Error) => {
       alert(err.message)
     },
+    staleTime: 100_000,
     enabled: ctx?.user !== undefined,
   })
 

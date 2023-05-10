@@ -14,6 +14,7 @@ import CreateBook from './pages/books/CreateBook'
 import CreateAuthor from './pages/authors/CreateAuthor'
 import BooksByAuthor from '~/pages/books/BooksByAuthor'
 import Login from '~/pages/home/Login'
+import EditAuthor from './pages/authors/EditAuthor'
 
 const theme = createTheme({
   palette: {
@@ -52,6 +53,7 @@ const App = (): JSX.Element => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/Authors" element={<Authors />} />
+                <Route path="/Author/:id" element={<EditAuthor />} />
                 <Route path="/Author/:id/Books" element={<BooksByAuthor />} />
                 <Route path="/Books" element={<Books />} />
                 <Route path="/CreateBook" element={<CreateBook />} />

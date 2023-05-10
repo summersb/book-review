@@ -1,6 +1,6 @@
 import { getBooks, getBooksByAuthor, saveBook, deleteBook } from './bookApi'
 import { auth, db, app } from './firebase'
-import { getAuthor, saveAuthor, getAuthorById, deleteAuthor } from './authorApi'
+import { getAuthor, saveAuthor, getAuthorById, deleteAuthor, updateAuthor } from './authorApi'
 
 export {
   getAuthor,
@@ -14,4 +14,5 @@ export {
   db,
   app,
   deleteAuthor,
+  updateAuthor,
 }

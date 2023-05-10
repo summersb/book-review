@@ -6,35 +6,58 @@ import { useForm } from 'react-hook-form'
 import { Author } from '~/type'
 import { WideTextField } from '~/components'
 import Button from '@mui/material/Button'
-import { saveAuthor } from '~/api'
+import { getAuthorById, updateAuthor } from '~/api'
 import NoUser from '../home/NoUser'
 import UserContext from '~/context/UserContext'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const CreateAuthor = (): JSX.Element => {
+const EditAuthor = (): JSX.Element => {
   const [saving, setSaving] = useState<boolean>(false)
   const ctx = useContext(UserContext)
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { id } = useParams()
 
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors },
-  } = useForm<Author>({
-    defaultValues: {
-      lastName: '',
-      firstName: '',
+  } = useForm<Author>()
+
+  const { data: reviewList } = useQuery({
+    queryKey: ['Author', id],
+    queryFn: () => getAuthorById(id as string),
+    onSuccess: (a) => {
+      if (a) {
+        setValue('firstName', a.firstName)
+        setValue('lastName', a.lastName)
+      }
     },
+    onError: (err: Error) => {
+      alert(err.message)
+    },
+    retry: false,
+    enabled: ctx?.user !== undefined && id !== undefined,
   })
+
+  if (ctx?.user === undefined) {
+    return <NoUser />
+  }
+
+  if (id === undefined) {
+    navigate('/Authors')
+  }
 
   const handleSave = (author: Author) => {
     setSaving(true)
     const startTime = new Date().getTime()
-    saveAuthor(author)
+    updateAuthor(id as string, author)
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ['Author'] })
-        reset()
+        queryClient.invalidateQueries({ queryKey: ['Author', id] })
+        navigate('/Authors')
       })
       .catch((err) => {
         alert(err.message)
@@ -51,10 +74,6 @@ const CreateAuthor = (): JSX.Element => {
       })
   }
 
-  if (ctx?.user === undefined) {
-    return <NoUser />
-  }
-
   return (
     <div id="top">
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={saving}>
@@ -63,23 +82,34 @@ const CreateAuthor = (): JSX.Element => {
       <h3>Create Author</h3>
       <Grid container sx={{ padding: '20px', width: '100%' }}>
         <Grid item xs={12}>
-          <WideTextField label="First Name" {...register('firstName')} error={!(errors.firstName == null)} />
+          <WideTextField
+            label="First Name"
+            defaultValue
+            {...register('firstName')}
+            error={!(errors.firstName == null)}
+          />
         </Grid>
         <Grid item xs={12}>
           <WideTextField
             label="Last Name"
+            defaultValue
             {...register('lastName', { required: true })}
             error={!(errors.lastName == null)}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant="outlined" sx={{ float: 'right' }} onClick={handleSubmit(handleSave)}>
-            Create
-          </Button>
+          <div style={{ float: 'right' }}>
+            <Button variant="outlined" onClick={() => navigate('/Authors')}>
+              Cancel
+            </Button>
+            <Button variant="outlined" onClick={handleSubmit(handleSave)}>
+              Update
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </div>
   )
 }
 
-export default CreateAuthor
+export default EditAuthor
