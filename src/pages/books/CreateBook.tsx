@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import { styled } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Rating from '@mui/material/Rating'
 import StarIcon from '@mui/icons-material/Star'
 import Box from '@mui/material/Box'
@@ -15,9 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useForm } from 'react-hook-form'
 import { getAuthor, saveBook } from '~/api'
 import { type Author, type AuthorRecord, type Book, type Rating as BookRating } from '~/type'
-import UserContext from '../../context/UserContext'
 import { WideTextField } from '~/components'
-import NoUser from '../home/NoUser'
 
 const StyledFormControl = styled(FormControl)(() => ({
   width: '100%',
@@ -41,7 +39,10 @@ const CreateBook = (): JSX.Element => {
   const [hover, setHover] = React.useState<number>(-1)
   const [authorMap, setAuthorMap] = useState<AuthorMap>({})
   const [saving, setSaving] = useState<boolean>(false)
-  const ctx = useContext(UserContext)
+
+  useEffect(() => {
+    document.title = 'Book Review - Create Review'
+  }, [])
 
   const {
     register,
@@ -74,7 +75,6 @@ const CreateBook = (): JSX.Element => {
       alert(err.message)
     },
     retry: false,
-    enabled: ctx?.user !== undefined,
   })
 
   const handleSave = (book: Book): void => {
@@ -97,10 +97,6 @@ const CreateBook = (): JSX.Element => {
           setSaving(false)
         }, delay)
       })
-  }
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
   }
 
   const labelIndex: number = hover !== -1 ? hover : getValues('rating') === undefined ? hover : getValues('rating')

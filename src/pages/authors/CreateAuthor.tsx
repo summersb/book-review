@@ -1,20 +1,21 @@
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import Grid from '@mui/material/Grid'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Author } from '~/type'
 import { WideTextField } from '~/components'
 import Button from '@mui/material/Button'
 import { saveAuthor } from '~/api'
-import NoUser from '../home/NoUser'
-import UserContext from '~/context/UserContext'
 import { useQueryClient } from '@tanstack/react-query'
 
 const CreateAuthor = (): JSX.Element => {
   const [saving, setSaving] = useState<boolean>(false)
-  const ctx = useContext(UserContext)
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    document.title = 'Book Review - Create Author'
+  }, [])
 
   const {
     register,
@@ -49,10 +50,6 @@ const CreateAuthor = (): JSX.Element => {
           setSaving(false)
         }, delay)
       })
-  }
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
   }
 
   return (

@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import React, { useContext, useState } from 'react'
-import UserContext from '../../context/UserContext'
+import React, { useState } from 'react'
 import { getAuthor, getBooks } from '~/api'
 import { type Author, AuthorMap, type AuthorRecord, type Book } from '~/type'
-import NoUser from '../home/NoUser'
 import BookList, { BookListType } from '~/pages/books/BookList'
+import useAuth from '~/hooks/useAuth'
 
 const Books = (): JSX.Element => {
-  const ctx = useContext(UserContext)
   const [map, setMap] = useState<AuthorMap>({})
   const { data: reviewList, isSuccess: bookLoaded } = useQuery({
     queryKey: ['Book'],
@@ -16,7 +14,6 @@ const Books = (): JSX.Element => {
       alert(err.message)
     },
     staleTime: 100_000,
-    enabled: ctx?.user !== undefined,
   })
 
   const { isSuccess: authorLoaded } = useQuery({
@@ -35,12 +32,7 @@ const Books = (): JSX.Element => {
       alert(err.message)
     },
     retry: false,
-    enabled: ctx?.user !== undefined,
   })
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
-  }
 
   if (!bookLoaded || !authorLoaded) {
     return <>Loading</>

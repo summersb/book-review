@@ -1,23 +1,26 @@
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import Grid from '@mui/material/Grid'
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Author } from '~/type'
 import { WideTextField } from '~/components'
 import Button from '@mui/material/Button'
 import { getAuthorById, updateAuthor } from '~/api'
-import NoUser from '../home/NoUser'
-import UserContext from '~/context/UserContext'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
+import useAuth from '~/hooks/useAuth'
 
 const EditAuthor = (): JSX.Element => {
   const [saving, setSaving] = useState<boolean>(false)
-  const ctx = useContext(UserContext)
+  const { user } = useAuth()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { id } = useParams()
+
+  useEffect(() => {
+    document.title = 'Book Review - Edit Author'
+  }, [])
 
   const {
     register,
@@ -39,12 +42,8 @@ const EditAuthor = (): JSX.Element => {
       alert(err.message)
     },
     retry: false,
-    enabled: ctx?.user !== undefined && id !== undefined,
+    enabled: user?.name !== undefined && id !== undefined,
   })
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
-  }
 
   if (id === undefined) {
     navigate('/Authors')

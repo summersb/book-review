@@ -1,9 +1,8 @@
 import Paper from '@mui/material/Paper'
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import UserContext from '~/context/UserContext'
 import { deleteBook, getAuthor } from '~/api'
 import Link from '@mui/material/Link'
 import { Link as RouterLink } from 'react-router-dom'
@@ -17,14 +16,18 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import NoUser from '~/pages/home/NoUser'
+import useAuth from '~/hooks/useAuth'
 
 const Authors = (): JSX.Element => {
-  const ctx = useContext(UserContext)
+  const ctx = useAuth()
   const [deleting, setIsDeleting] = useState<boolean>(false)
   const queryClient = useQueryClient()
   const [author, setAuthor] = useState<QueryDocumentSnapshot<DocumentData>>()
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false)
+
+  useEffect(() => {
+    document.title = 'Book Review - Author'
+  }, [])
 
   const { data: reviewList } = useQuery({
     queryKey: ['Author'],
@@ -62,10 +65,6 @@ const Authors = (): JSX.Element => {
 
   const handleClose = (): void => {
     setConfirmDelete(false)
-  }
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
   }
 
   return (

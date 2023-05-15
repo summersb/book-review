@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BookReview from '~/pages/books/BookReview'
 import { AuthorMap, Book } from '~/type'
 import { deleteBook } from '~/api'
@@ -34,6 +34,10 @@ const BookList: React.FC<BookListProps> = (props: BookListProps): JSX.Element =>
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    document.title = 'Book Review - Books'
+  }, [])
 
   const handleClose = (): void => {
     setConfirmDelete(false)

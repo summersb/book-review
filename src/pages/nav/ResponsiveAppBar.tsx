@@ -1,4 +1,4 @@
-import React, { type MouseEvent, useContext, useState } from 'react'
+import React, { useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -14,9 +14,9 @@ import PersonIcon from '@mui/icons-material/Person'
 import Avatar from '@mui/material/Avatar'
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider } from 'firebase/auth'
 import { auth } from '~/api'
-import UserContext from '../../context/UserContext'
+import useAuth from '~/hooks/useAuth'
 
 interface MenuData {
   title: string
@@ -35,10 +35,8 @@ const googleProvider = new GoogleAuthProvider()
 function ResponsiveAppBar(): JSX.Element {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  const ctx = useContext(UserContext)
+  const { user } = useAuth()
   const navigate = useNavigate()
-
-  const user = ctx?.user
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorElNav(event.currentTarget)
@@ -55,11 +53,11 @@ function ResponsiveAppBar(): JSX.Element {
     setAnchorElUser(null)
   }
 
-  const loginPopup = (): void => {
-    signInWithPopup(auth, googleProvider)
-      .catch(alert)
-      .finally(() => setAnchorElUser(null))
-  }
+  // const loginPopup = (): void => {
+  //   signInWithPopup(auth, googleProvider)
+  //     .catch(alert)
+  //     .finally(() => setAnchorElUser(null))
+  // }
 
   const logOut = (): void => {
     auth.signOut().then(() => {
@@ -67,6 +65,7 @@ function ResponsiveAppBar(): JSX.Element {
     })
   }
 
+  console.log('AppBar')
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -162,11 +161,11 @@ function ResponsiveAppBar(): JSX.Element {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Login">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <>
-                  {user !== undefined && <Avatar alt={user.displayName as string} src={user.photoURL as string} />}
-                  {user === undefined && <PersonIcon />}
+                  {user?.name !== undefined && <Avatar alt={user.name as string} src={user.photoURL as string} />}
+                  {user?.name === undefined && <PersonIcon />}
                 </>
               </IconButton>
             </Tooltip>
@@ -186,10 +185,10 @@ function ResponsiveAppBar(): JSX.Element {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={loginPopup} sx={{ display: user ? 'none' : 'block' }}>
-                <Typography textAlign="center">Login</Typography>
-              </MenuItem>
-              <MenuItem onClick={logOut} sx={{ display: user ? 'block' : 'none' }}>
+              {/*<MenuItem onClick={loginPopup} sx={{ display: user?.name ? 'none' : 'block' }}>*/}
+              {/*  <Typography textAlign="center">Login</Typography>*/}
+              {/*</MenuItem>*/}
+              <MenuItem onClick={logOut} sx={{ display: user?.name ? 'block' : 'none' }}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>

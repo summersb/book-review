@@ -2,10 +2,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
-import React, { useContext, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import UserContext from '~/context/UserContext'
-import NoUser from '../home/NoUser'
+import React, { useState } from 'react'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -28,7 +25,6 @@ type BookReviewProps = {
 
 const BookReview: React.FC<BookReviewProps> = (props: BookReviewProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
-  const ctx = useContext(UserContext)
 
   const handleOpen = () => {
     setOpen(true)
@@ -36,10 +32,6 @@ const BookReview: React.FC<BookReviewProps> = (props: BookReviewProps): JSX.Elem
 
   const handleClose = () => {
     setOpen(false)
-  }
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
   }
 
   return (

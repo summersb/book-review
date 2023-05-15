@@ -1,22 +1,23 @@
 import Paper from '@mui/material/Paper'
 import { useQuery } from '@tanstack/react-query'
-import React, { useContext, useState } from 'react'
-import UserContext from '../../context/UserContext'
+import React, { useEffect, useState } from 'react'
 import { getAuthorById, getBooksByAuthor } from '~/api'
-import { AuthorMap, type Author, type Book } from '~/type'
+import { type Author, AuthorMap, type Book } from '~/type'
 import { useParams } from 'react-router-dom'
-import NoUser from '../home/NoUser'
 import BookList, { BookListType } from '~/pages/books/BookList'
 
 const BooksByAuthor = (): JSX.Element => {
-  const ctx = useContext(UserContext)
   const [author, setAuthor] = useState<Author | null>(null)
   const { id } = useParams()
+
+  useEffect(() => {
+    document.title = 'Book Review - Books by Author'
+  }, [])
 
   const { data: bookList, isSuccess: bookLoaded } = useQuery({
     queryKey: ['Book', id],
     queryFn: () => getBooksByAuthor(id as string),
-    enabled: ctx?.user !== undefined && id !== undefined,
+    enabled: id !== undefined,
     onError: (err: Error) => {
       alert(err.message)
     },
@@ -35,12 +36,8 @@ const BooksByAuthor = (): JSX.Element => {
     },
     staleTime: 100_000,
     retry: false,
-    enabled: ctx?.user !== undefined && id !== undefined,
+    enabled: id !== undefined,
   })
-
-  if (ctx?.user === undefined) {
-    return <NoUser />
-  }
 
   if (!bookLoaded || !authorLoaded) {
     return <>Loading</>
